@@ -1,0 +1,39 @@
+---
+ansible_python_interpreter: /usr/bin/python2
+ansible_connection: ssh
+
+user:
+    name: kim
+    uid: 1000
+    group: users
+    gid: 100
+
+languages:
+    enabled:
+        - "sv_SE.UTF-8 UTF-8"
+        - "en_GB.UTF-8 UTF-8"
+
+journal:
+    max_size: 200M
+
+ssh:
+    public_keys:
+        - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCc3724+7/v0qON9u8Q+EDcIPQZR7vLFLu9wPx3uMLeHpzdvO/uVo2gu2cd3M/1CTKeLHx580PuBkxe+hN86uLFrM/KPiYazo+EK5sl/4GDRwL+XVFdBg+ugley92X/DAWcvA4JzKuwtUZ0o3V2wd1MedEhZ8Y7rz7F4XzvLXqxpaV5/fzpPFu8FG5qaYJJ9Zjnyg1u//0pFgV2Mmq2o+WV0mg8AeA5ufgbpmAqPIIJpQHvbzfb23bCW7P9GkqEEe5COhH/o7MomnWPnuI08VrIMYC9MivPPWUyo6ohySX6/+Ack0X4M3xnJ7GsuVN9F1NCeI2da0ms7zzkOE8neYZj kim@myrveln.se"
+        - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCYq8nEFIGaSSqlzuYivbqoG3jjDslpGYQ2YbBCkcpEnlWotcqv4mS0b292nsBRkIsUfHg7su29ZB525q/Fbw6G1S/UXUR8xrd/CFghjDY00X/nNdoW9jUzu7+xcUV7NKFrYp+bQtReVXjr/MRBT17brajjlP7HdC77tVvst8Rl4kkFHi0OQNXcxILckS42BoQDyOKRM9MKVkspicBWChFSPJF00ZoJ7vIUzQRy1BVGo/bLH7qhiI/02G9C2C/bVKVtr5zqEwJvir4NGiX5aN5gymN1Edu7hnCP57n/2VYkQIIpalhVBQTNCcc3sNO2+yvDKTpaciD+A+OgD9aIEJPl kim.brandt@infomaker.se"
+        - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzRp1uvvfNQMNsirTS5ItHQDCws+Ygw4GglQCBwUf9Q1Zo9+zEtA1NT05ETyRrEiHMPJ/C5eQ816ZP5p2xFKMOwVxkrzwRxUHyw6PzrBo559jKex9Iwei0IaOZCgNohaCbXGEte99eIyNBIjh4EfU+PiLQjiwOZO40H+ptyGantpLNIsYqjbUAJAv8NC/0wQ3DTd4iXgiZ1bZwSSr35m1Id2jkBLh2Ix9/wMIsHwyfNALpGTq0k1iVLJDSQOLP5Br+QUNJL/IVV2Pe8IkhQXu56cIYikHHeuYFZy1jVCNaEXTWI20LNDaFcnkrO2Ew4WBFp8QGgYfl23zqwqNF4M/9 jenkins@jenkins"
+
+base_packages:
+    - base-devel
+    - pacman-contrib
+    - binutils
+    - coreutils
+    - git
+    - jq
+    - lsof
+    - open-vm-tools
+    - openssh
+    - rsync
+    - screen
+    - sysstat
+    - unzip
+    - zip

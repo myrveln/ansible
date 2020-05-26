@@ -1,0 +1,12 @@
+---
+dependencies:
+  - { role: systemd }
+
+galaxy_info:
+  author: Kim Brandt (https://github.com/kimbrandt)
+  description: Base role to setup Arch Linux
+  min_ansible_version: 2.4
+  platforms:
+    - name: Archlinux
+      versions:
+      - all

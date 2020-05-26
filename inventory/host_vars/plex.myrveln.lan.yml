@@ -1,0 +1,4 @@
+---
+hostname: plex.myrveln.lan
+aur_pkg_name:
+  - plex-media-server

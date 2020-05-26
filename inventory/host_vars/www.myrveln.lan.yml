@@ -1,0 +1,7 @@
+---
+hostname: www.myrveln.lan
+aur_pkg_name:
+  - openresty
+pip_pkg_name:
+  - speedtest-cli
+  - ngxtop

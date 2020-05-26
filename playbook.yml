@@ -1,0 +1,25 @@
+---
+# Configure a base Arch system from scratch.
+- hosts: lan
+  roles:
+    - base
+  tags: base
+
+# Install specified AUR packages on hosts
+# Packages are specified in host_vars
+- hosts:
+    - www.myrveln.lan
+    - vpn.myrveln.lan
+    - plex.myrveln.lan
+  roles:
+    - aur-pkg-upgrade
+  tags: aur
+
+# Install specified pip packages on hosts
+# Packages are specified in host_vars
+- hosts:
+    - deluge.myrveln.lan
+    - www.myrveln.lan
+  roles:
+    - pip-pkg-upgrade
+  tags: pip

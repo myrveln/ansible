@@ -1,0 +1,9 @@
+---
+galaxy_info:
+  author: Kim Brandt (https://github.com/kimbrandt)
+  description: Systemd role to reload systemd config
+  min_ansible_version: 2.4
+  platforms:
+    - name: Archlinux
+      versions:
+      - all

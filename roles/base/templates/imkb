@@ -1,0 +1,66 @@
+# Environmental customizations
+# for kim@myrveln.se
+# 2017-09-19 19:40:03
+
+# Symbolic host and site
+export IMHOST={{ inventory_hostname_short }}
+export IMSITE=myrveln.lan
+
+# Bash and shell programs
+# Skip history spam
+export HISTIGNORE="&:ls:[bf]g:exit"
+export HISTCONTROL="ignoredups"
+
+# Skip suffixes in tab completion
+export FIGNORE=".o:~"
+export HOSTFILE=~/.hosts
+
+# Don't exit on ^D
+set -o ignoreeof
+
+# less
+# Case insensitive search
+export LESS="-i"
+
+# journalctl
+# Enable wrapping instead of truncate
+export SYSTEMD_LESS=FRXMK journalctl
+
+# Editor
+export EDITOR=emacs
+export SUDO_EDITOR=emacs
+export VISUAL=emacs
+
+# MySQL
+#export MYSQL_HOME=/opt/mysql
+#export MANPATH=$MYSQL_HOME/man:${MANPATH}
+#export MYSQL_PS1="\u@${IMHOST}[\d]> "
+#export PATH=$MYSQL_HOME/bin:${PATH}
+
+# Java
+#export JAVA_HOME=/opt/jdk
+#export PATH=${JAVA_HOME}/bin:${PATH}
+
+# Groovy
+#export GROOVY_HOME=/opt/groovy
+#export PATH=$PATH:$GROOVY_HOME/bin
+
+# Useful aliases
+alias ls='ls $LS_OPTIONS -hF'
+alias ll='ls $LS_OPTIONS -lhF'
+alias l='ls $LS_OPTIONS -lAhF'
+alias cd..="cd .."
+alias c="clear"
+alias ssh="ssh -X"
+alias ..="cd .."
+alias semacs="sudoedit"
+
+# Terminal colours (after installing GNU coreutils)
+NM="\[\033[0;38m\]"	  #means no background and white lines
+HI="\[\033[0;37m\]"	  #change this for letter colors
+HII="\[\033[0;31m\]"	  #change this for letter colors
+SI="\[\033[0;33m\]"	  #this is for the current directory
+IN="\[\033[0m\]"
+
+# Prompt
+export PS1="$NM[ $HI\u $HII\$IMHOST $SI\w$NM ] $IN"

@@ -1,0 +1,106 @@
+---
+
+- name: base | copy pacman configuration file
+  copy:
+    src: pacman.conf
+    dest: /etc/pacman.conf
+  become: yes
+
+- name: base | refresh pacman mirrors
+  pacman:
+    update_cache: yes
+  become: yes
+  register: refresh
+  tags: upgrade
+
+- name: base | upgrade packages on system
+  pacman:
+    update_cache: yes
+    upgrade: yes
+  become: yes
+  register: upgraded_packages
+  when: refresh is changed
+  tags: upgrade
+
+- name: base | show upgraded packages
+  debug:
+    msg: "{{ upgraded_packages.packages }}"
+  when: upgraded_packages is changed
+  tags: upgrade
+
+- name: base | enable configured locales
+  template:
+    src: locale.gen
+    dest: /etc/locale.gen
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  register: locale
+
+- name: base | add /etc/locale.conf to the system
+  copy:
+    src: locale.conf
+    dest: /etc/locale.conf
+    owner: root
+    group: root
+  become: yes
+
+- name: base | generate the locale files
+  command: locale-gen
+  become: yes
+  when: locale is changed
+
+- name: base | symlink the local time
+  file:
+    src: /usr/share/zoneinfo/Europe/Stockholm
+    dest: /etc/localtime
+  become: yes
+
+- name: base | .ssh directory for user
+  file:
+    path: /home/{{ user.name }}/.ssh
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: 0700
+
+- name: base | add ssh.public_keys to authorized_keys
+  lineinfile:
+    path: /home/{{ user.name }}/.ssh/authorized_keys
+    state: present
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: 0600
+    line: "{{ item }}"
+  with_items:
+    - "{{ ssh.public_keys }}"
+  when: ssh is defined and ssh.public_keys is defined
+
+- name: base | set hostname in /etc/hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+  become: yes
+  when: not inventory_hostname is match('(\d{1,3}\.){3}\d{1,3}')
+
+- name: base | template the /etc/hosts
+  template:
+    src: hosts.j2
+    dest: "/etc/hosts"
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+
+# Include sub tasks
+- include_tasks: shell.yml
+  tags: [base,shell]
+
+- include_tasks: sudo.yml
+  tags: [base,sudo]
+
+- include_tasks: packages.yml
+  tags: [base,packages]
+
+- include_tasks: journal.yml
+  tags: [base,journal]

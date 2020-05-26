@@ -1,0 +1,101 @@
+---
+# Configure and install the bash shell and setup environment
+- name: shell | install bash and bash-completion
+  pacman:
+    name:
+        - bash
+        - bash-completion
+    state: present
+  become: yes
+
+- name: shell | copy template to ~/.imkb
+  template:
+    src: imkb
+    dest: "/home/{{ user.name }}/.imkb"
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    mode: 0755
+  become: true
+
+- name: shell | get fileinfo on .bash_profile for {{ user.name }}
+  stat:
+    path: "/home/{{ user.name }}/.bash_profile"
+  register: bash_profile_user
+
+- name: shell | remove .bash_profile for {{ user.name }}
+  file:
+    path: "/home/{{ user.name }}/.bash_profile"
+    state: absent
+  when: bash_profile_user.stat.isreg == true
+
+- name: shell | create .bash_profile for {{ user.name }}
+  file:
+    src: "/home/{{ user.name }}/.imkb"
+    dest: "/home/{{ user.name }}/.bash_profile"
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    state: link
+  become: yes
+
+- name: shell | get fileinfo on .bash_profile for root
+  stat:
+    path: "/root/.bash_profile"
+  register: bash_profile_root
+  become: yes
+
+- name: shell | remove .bash_profile for root
+  file:
+    path: "/root/.bash_profile"
+    state: absent
+  become: yes
+  when: bash_profile_root.stat.isreg == true
+
+- name: shell | create .bash_profile for root
+  file:
+    src: "/home/{{ user.name }}/.imkb"
+    dest: "/root/.bash_profile"
+    owner: root
+    group: root
+    state: link
+  become: yes
+
+# Install and configure emacs-nox.
+- name: shell | install emacs-nox
+  pacman:
+    name: emacs-nox
+    state: present
+  become: yes
+
+- name: shell | check state of emacs.d/themes folder
+  file:
+    path: "/home/{{ user.name }}/.emacs.d/themes"
+    mode: 0775
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+    state: directory
+
+- name: shell | download color-theme afternoon from GitHub
+  get_url:
+    url: https://raw.githubusercontent.com/osener/emacs-afternoon-theme/master/afternoon-theme.el
+    dest: /home/{{ user.name }}/.emacs.d/themes/afternoon-theme.el
+    mode: 0644
+    owner: "{{ user.name }}"
+    group: "{{ user.group }}"
+  register: downloaded_theme
+
+- name: shell | add color-theme path to ~/.emacs
+  lineinfile:
+    state: present
+    create: yes
+    name: "/home/{{ user.name }}/.emacs"
+    line: '(load-file "{{ downloaded_theme.dest }}")'
+    insertafter: EOF
+
+- name: shell | create link to {{ user.name }} .emacs for root
+  file:
+    src: "/home/{{ user.name }}/.emacs"
+    dest: "/root/.emacs"
+    owner: root
+    group: root
+    state: link
+  become: yes

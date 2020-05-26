@@ -1,0 +1,10 @@
+#
+# /etc/hosts: static lookup table for host names
+#
+
+#<ip-address>	<hostname.domain.org>	<hostname>
+{{ ansible_default_ipv4.address }}        {{ ansible_fqdn }}    {{ ansible_hostname }}
+127.0.0.1       localhost.localdomain   localhost
+::1             localhost.localdomain   localhost
+
+# End of file

@@ -1,0 +1,33 @@
+---
+# handlers file
+
+- name: restart plex-media-server
+  service:
+    name: plexmediaserver
+    state: restarted
+    enabled: yes
+  become: yes
+
+- name: restart openresty
+  service:
+    name: openresty
+    state: restarted
+    enabled: yes
+  become: yes
+
+- name: restart newrelic-sysmond
+  service:
+    name: newrelic-sysmond
+    state: restarted
+    enabled: yes
+  become: yes
+
+- name: restart libreswan
+  service:
+    name: ipsec
+    state: restarted
+    enabled: yes
+  become: yes
+
+- name: restart rar
+  shell: echo "no service to restart"

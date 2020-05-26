@@ -1,0 +1,12 @@
+---
+- name: restart paccache
+  service:
+    name: paccache.timer
+    state: restarted
+  become: yes
+
+- name: restart journald
+  service:
+    name: systemd-journald
+    state: restarted
+  become: yes

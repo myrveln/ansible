@@ -1,0 +1,16 @@
+---
+# Upgrade or install latest pip version of a package
+
+- name: pip | install or upgrade python2-pip
+  package:
+      name: "{{ pip_package }}"
+      state: latest
+  when: pip_pkg_name is defined
+  become: yes
+
+- name: pip | upgrade each pip package
+  pip:
+      name: "{{ pip_pkg_name }}"
+      state: latest
+  when: pip_pkg_name is defined
+  become: yes

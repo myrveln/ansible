@@ -1,0 +1,31 @@
+---
+# Install base packages and configure pacman cleanup services
+- name: packages | install base packages
+  pacman:
+    name: "{{ base_packages }}"
+    state: present
+  become: yes
+
+- name: packages | install pacman cache cleanup service
+  copy:
+    src: paccache.service
+    dest: /etc/systemd/system/paccache.service
+  notify:
+    - reload systemd config
+  become: yes
+
+- name: packages | install pacman cache cleanup timer
+  copy:
+    src: paccache.timer
+    dest: /etc/systemd/system/paccache.timer
+  notify:
+    - reload systemd config
+    - restart paccache
+  become: yes
+
+- name: packages | enable and start pacman cache cleanup timer
+  service:
+    name: paccache.timer
+    enabled: yes
+    state: started
+  become: yes

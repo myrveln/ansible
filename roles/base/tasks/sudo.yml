@@ -1,0 +1,26 @@
+---
+# Install and configure sudo, and add user.name to groups
+- name: sudo | install sudo
+  pacman:
+    name: sudo
+    state: present
+  become: yes
+
+- name: sudo | add user to groups
+  user:
+    name: "{{ user.name }}"
+    groups: "{{ item }}"
+    append: yes
+  with_items:
+    - wheel
+    - storage
+    - power
+  become: yes
+
+- name: sudo | copy sudo configuration
+  template:
+    src: sudoers.j2
+    dest: /etc/sudoers
+    mode: 440
+    validate: "visudo -cf %s"
+  become: yes
