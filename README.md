@@ -1,6 +1,6 @@
 # Ansible Arch Linux base repository
 
-Tested and used with Ansible 2.7.8 and Python 2.7.10
+Tested and used with Ansible 2.9.6 and Python 2.7.10
 
 ### Examples
 
