@@ -1,7 +1,0 @@
----
-hostname: deluge.myrveln.lan
-pip_pkg_name:
-  - flexget
-  - subliminal
-  - speedtest-cli
-  - deluge-client
