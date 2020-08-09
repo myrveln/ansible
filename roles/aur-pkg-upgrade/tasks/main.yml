@@ -35,7 +35,7 @@
 
 # Diff the versions and set filename to {{ downloaded_filepath }}
 - name: aur | diff current and latest package version
-  shell: echo {{ item.1.item }}-{{ item.1.json.results.Version }}-x86_64.pkg.tar.xz
+  shell: echo {{ item.1.item }}-{{ item.1.json.results.Version }}-x86_64.pkg.tar.zst
   when: item.0.stdout < item.1.json.results.Version
   with_together:
     - "{{ pacman_query.results }}"
