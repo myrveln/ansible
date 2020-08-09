@@ -30,7 +30,6 @@ base_packages:
     - git
     - jq
     - lsof
-    - open-vm-tools
     - openssh
     - rsync
     - screen
