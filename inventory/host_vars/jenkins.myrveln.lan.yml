@@ -1,2 +1,4 @@
 ---
 hostname: jenkins.myrveln.lan
+aur_pkg_name:
+  - pi-hole-ftl

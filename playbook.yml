@@ -9,8 +9,9 @@
 # Packages are specified in host_vars
 - hosts:
     - www.myrveln.lan
-    - vpn.myrveln.lan
     - plex.myrveln.lan
+    - jenkins.myrveln.lan
+    - pihole.myrveln.lan
   roles:
     - aur-pkg-upgrade
   tags: aur

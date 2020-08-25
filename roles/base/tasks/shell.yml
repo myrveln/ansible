@@ -37,19 +37,6 @@
     state: link
   become: yes
 
-- name: shell | get fileinfo on .bash_profile for root
-  stat:
-    path: "/root/.bash_profile"
-  register: bash_profile_root
-  become: yes
-
-- name: shell | remove .bash_profile for root
-  file:
-    path: "/root/.bash_profile"
-    state: absent
-  become: yes
-  when: bash_profile_root.stat.isreg == true
-
 - name: shell | create .bash_profile for root
   file:
     src: "/home/{{ user.name }}/.imkb"

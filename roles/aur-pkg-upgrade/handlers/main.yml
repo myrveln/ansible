@@ -15,16 +15,23 @@
     enabled: yes
   become: yes
 
-- name: restart newrelic-sysmond
+- name: restart pi-hole-server
   service:
-    name: newrelic-sysmond
+    name: pi-hole-server
     state: restarted
     enabled: yes
   become: yes
 
-- name: restart libreswan
+- name: restart pihole-FTL
   service:
-    name: ipsec
+    name: pihole-FTL
+    state: restarted
+    enabled: yes
+  become: yes
+
+- name: restart cloudflared
+  service:
+    name: cloudflared
     state: restarted
     enabled: yes
   become: yes

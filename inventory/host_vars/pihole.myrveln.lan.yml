@@ -1,0 +1,6 @@
+---
+hostname: pihole.myrveln.lan
+aur_pkg_name:
+  - pi-hole-ftl
+  - pi-hole-server
+  - cloudflared
