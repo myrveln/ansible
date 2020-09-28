@@ -29,9 +29,9 @@
     enabled: yes
   become: yes
 
-- name: restart cloudflared
+- name: restart cloudflared-bin
   service:
-    name: cloudflared
+    name: cloudflared@cloudflared
     state: restarted
     enabled: yes
   become: yes
