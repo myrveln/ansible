@@ -1,0 +1,5 @@
+---
+hostname: unifi.myrveln.lan
+aur_pkg_name:
+  - mongodb-bin
+  - unifi

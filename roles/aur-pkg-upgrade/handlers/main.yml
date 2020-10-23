@@ -36,5 +36,24 @@
     enabled: yes
   become: yes
 
+- name: restart mongodb-bin
+  service:
+    name: mongodb
+    state: restarted
+    enabled: yes
+  become: yes
+
+- name: restart unifi
+  service:
+    name: unifi
+    state: restarted
+    enabled: yes
+  become: yes
+
+
+# AUR packages without any service that needs to be restarted
 - name: restart rar
+  shell: echo "no service to restart"
+
+- name: restart python-cheetah3
   shell: echo "no service to restart"

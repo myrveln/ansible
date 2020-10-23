@@ -12,6 +12,7 @@
     - plex.myrveln.lan
     - jenkins.myrveln.lan
     - pihole.myrveln.lan
+    - unifi.myrveln.lan
   roles:
     - aur-pkg-upgrade
   tags: aur
