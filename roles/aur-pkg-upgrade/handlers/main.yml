@@ -17,14 +17,14 @@
 
 - name: restart pi-hole-server
   service:
-    name: pi-hole-server
+    name: pihole-ftl
     state: restarted
     enabled: yes
   become: yes
 
-- name: restart pihole-FTL
+- name: restart pihole-ftl
   service:
-    name: pihole-FTL
+    name: pihole-ftl
     state: restarted
     enabled: yes
   become: yes
