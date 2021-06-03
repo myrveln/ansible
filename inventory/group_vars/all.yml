@@ -23,13 +23,14 @@ ssh:
 
 base_packages:
     - base-devel
-    - pacman-contrib
     - binutils
     - coreutils
     - git
+    - inetutils
     - jq
     - lsof
     - openssh
+    - pacman-contrib
     - rsync
     - screen
     - sysstat
