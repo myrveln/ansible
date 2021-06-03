@@ -77,12 +77,6 @@
     - "{{ ssh.public_keys }}"
   when: ssh is defined and ssh.public_keys is defined
 
-- name: base | set hostname in /etc/hostname
-  hostname:
-    name: "{{ inventory_hostname }}"
-  become: yes
-  when: not inventory_hostname is match('(\d{1,3}\.){3}\d{1,3}')
-
 - name: base | template the /etc/hosts
   template:
     src: hosts.j2
@@ -104,3 +98,9 @@
 
 - include_tasks: journal.yml
   tags: [base,journal]
+
+- name: base | set hostname in /etc/hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+  become: yes
+  when: not inventory_hostname is match('(\d{1,3}\.){3}\d{1,3}')
