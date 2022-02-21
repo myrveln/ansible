@@ -6,7 +6,7 @@
   connection: local
   become: no
   uri: >
-    url=https://aur.archlinux.org/rpc.php?type=info&arg={{ item }}
+    url=https://aur.archlinux.org/rpc.php?v=5&type=info&arg={{ item }}
     return_content=yes
     timeout=6
   with_items:
@@ -18,16 +18,16 @@
     that:
       - item.status == 200
       - item.json is defined
-      - item.json.type == 'info'
+      - item.json.type == 'multiinfo'
       - item.json.resultcount == 1
-      - item.json.results is defined
+      - item.json.results.0.Version is defined
   with_items:
     - "{{ api_info.results }}"
   no_log: True
 
 # Get the installed version of each aur_pkg_name
 - name: aur | get installed package version
-  shell: pacman -Q | grep {{ item }} | cut -d' ' -f2
+  shell: pacman -Q {{ item }} | cut -d' ' -f2
   become: yes
   with_items:
     - "{{ aur_pkg_name }}"
@@ -35,8 +35,8 @@
 
 # Diff the versions and set filename to {{ downloaded_filepath }}
 - name: aur | diff current and latest package version
-  shell: echo {{ item.1.item }}-{{ item.1.json.results.Version }}-x86_64.pkg.tar.zst
-  when: item.0.stdout < item.1.json.results.Version
+  shell: echo {{ item.1.item }}-{{ item.1.json.results.0.Version }}-x86_64.pkg.tar.zst
+  when: item.0.stdout < item.1.json.results.0.Version
   with_together:
     - "{{ pacman_query.results }}"
     - "{{ api_info.results }}"
