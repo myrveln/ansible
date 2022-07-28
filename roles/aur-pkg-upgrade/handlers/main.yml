@@ -57,3 +57,6 @@
 
 - name: restart python-cheetah3
   shell: echo "no service to restart"
+
+- name: restart mongosh-bin
+  shell: echo "no service to restart"
