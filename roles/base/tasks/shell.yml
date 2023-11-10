@@ -1,88 +1,75 @@
 ---
-# Configure and install the bash shell and setup environment
-- name: shell | install bash and bash-completion
+# Configure environment and install pacman packages
+- name: shell | install bash, bash-completion and emacs-nox
   pacman:
     name:
         - bash
         - bash-completion
+        - emacs-nox
     state: present
   become: yes
 
-- name: shell | copy template to ~/.imkb
-  template:
-    src: imkb
-    dest: "/home/{{ user.name }}/.imkb"
+- name: shell | download dotfiles from github to user ~/
+  get_url:
+    url: https://raw.githubusercontent.com/myrveln/dotfiles/master/{{ item }}
+    dest: "/home/{{ user.name }}/{{ item }}"
     owner: "{{ user.name }}"
     group: "{{ user.group }}"
     mode: 0755
-  become: true
+  with_items:
+    - ".bash_profile"
+    - ".aliases"
+    - ".bashrc"
 
-- name: shell | get fileinfo on .bash_profile for {{ user.name }}
-  stat:
-    path: "/home/{{ user.name }}/.bash_profile"
-  register: bash_profile_user
-
-- name: shell | remove .bash_profile for {{ user.name }}
-  file:
-    path: "/home/{{ user.name }}/.bash_profile"
-    state: absent
-  when: bash_profile_user.stat.isreg == true
-
-- name: shell | create .bash_profile for {{ user.name }}
-  file:
-    src: "/home/{{ user.name }}/.imkb"
-    dest: "/home/{{ user.name }}/.bash_profile"
-    owner: "{{ user.name }}"
-    group: "{{ user.group }}"
-    state: link
-  become: yes
-
-- name: shell | create .bash_profile for root
-  file:
-    src: "/home/{{ user.name }}/.imkb"
-    dest: "/root/.bash_profile"
+- name: shell | download dotfiles from github to root ~/
+  get_url:
+    url: https://raw.githubusercontent.com/myrveln/dotfiles/master/{{ item }}
+    dest: "/root/{{ item }}"
     owner: root
     group: root
-    state: link
+    mode: 0755
+  with_items:
+    - ".bash_profile"
+    - ".aliases"
+    - ".bashrc"
   become: yes
 
-# Install and configure emacs-nox.
-- name: shell | install emacs-nox
-  pacman:
-    name: emacs-nox
-    state: present
-  become: yes
-
-- name: shell | check state of emacs.d/themes folder
+- name: shell | check state of ~/.config/emacs/themes for user
   file:
-    path: "/home/{{ user.name }}/.emacs.d/themes"
+    path: "/home/{{ user.name }}/.config/emacs/themes"
     mode: 0775
     owner: "{{ user.name }}"
     group: "{{ user.group }}"
     state: directory
 
-- name: shell | download color-theme afternoon from GitHub
+- name: shell | check state of ~/.config/emacs/themes for root
+  file:
+    path: "/root/.config/emacs/themes"
+    mode: 0775
+    owner: "root"
+    group: "root"
+    state: directory
+  become: yes
+
+- name: shell | download emacs config from github to user ~/
   get_url:
-    url: https://raw.githubusercontent.com/osener/emacs-afternoon-theme/master/afternoon-theme.el
-    dest: /home/{{ user.name }}/.emacs.d/themes/afternoon-theme.el
-    mode: 0644
+    url: https://raw.githubusercontent.com/myrveln/dotfiles/master/.config/emacs/{{ item }}
+    dest: "/home/{{ user.name }}/.config/emacs/{{ item }}"
     owner: "{{ user.name }}"
     group: "{{ user.group }}"
-  register: downloaded_theme
+    mode: 0644
+  with_items:
+    - "themes/afternoon-theme.el"
+    - "init.el"
 
-- name: shell | add color-theme path to ~/.emacs
-  lineinfile:
-    state: present
-    create: yes
-    name: "/home/{{ user.name }}/.emacs"
-    line: '(load-file "{{ downloaded_theme.dest }}")'
-    insertafter: EOF
-
-- name: shell | create link to {{ user.name }} .emacs for root
-  file:
-    src: "/home/{{ user.name }}/.emacs"
-    dest: "/root/.emacs"
-    owner: root
-    group: root
-    state: link
+- name: shell | download emacs config from github to root ~/
+  get_url:
+    url: https://raw.githubusercontent.com/myrveln/dotfiles/master/.config/emacs/{{ item }}
+    dest: "/root/.config/emacs/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  with_items:
+    - "themes/afternoon-theme.el"
+    - "init.el"
   become: yes
