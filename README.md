@@ -1,6 +1,7 @@
 # Ansible Arch Linux base repository
 
-Tested and used with Ansible 2.9.6 and Python 2.7.10
+This repository is only intended for my own personal usage. Feel free to copy parts into your own environment.
+Tested and used with Ansible 2.15.5 and Python 3.11.6.
 
 ### Examples
 
