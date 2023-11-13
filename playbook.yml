@@ -16,12 +16,3 @@
   roles:
     - aur-pkg-upgrade
   tags: aur
-
-# Install specified pip packages on hosts
-# Packages are specified in host_vars
-- hosts:
-    - deluge.myrveln.lan
-    - www.myrveln.lan
-  roles:
-    - pip-pkg-upgrade
-  tags: pip

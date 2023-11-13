@@ -1,4 +1,0 @@
----
-# Default variables for role
-
-pip_package: python2-pip
