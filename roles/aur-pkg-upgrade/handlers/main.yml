@@ -1,13 +1,6 @@
 ---
 # handlers file
 
-- name: restart plex-media-server
-  service:
-    name: plexmediaserver
-    state: restarted
-    enabled: yes
-  become: yes
-
 - name: restart openresty
   service:
     name: openresty

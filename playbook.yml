@@ -9,7 +9,6 @@
 # Packages are specified in host_vars
 - hosts:
     - www.myrveln.lan
-    - plex.myrveln.lan
     - jenkins.myrveln.lan
     - pihole.myrveln.lan
     - unifi.myrveln.lan
