@@ -36,13 +36,6 @@
     enabled: yes
   become: yes
 
-- name: restart unifi
-  service:
-    name: unifi
-    state: restarted
-    enabled: yes
-  become: yes
-
 
 # AUR packages without any service that needs to be restarted
 - name: restart rar

@@ -1,6 +1,0 @@
----
-hostname: unifi.myrveln.lan
-aur_pkg_name:
-  - mongosh-bin
-  - mongodb-bin
-  - unifi
