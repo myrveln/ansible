@@ -1,5 +1,5 @@
 ---
-hostname: www.myrveln.lan
+hostname: www.lan.myrveln.se
 aur_pkg_name:
   - openresty
 pip_pkg_name:
