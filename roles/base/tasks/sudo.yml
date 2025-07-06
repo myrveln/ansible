@@ -1,5 +1,5 @@
 ---
-# Install and configure sudo, and add user.name to groups
+# Install and configure sudo
 - name: sudo | install sudo
   pacman:
     name: sudo
@@ -17,10 +17,19 @@
     - power
   become: yes
 
-- name: sudo | copy sudo configuration
+- name: sudo | copy custom sshd drop-in
   template:
-    src: sudoers.j2
-    dest: /etc/sudoers
+    src: 00-custom-sshd.conf
+    dest: /etc/ssh/sshd_config.d/00-custom-sshd.conf
+    mode: 400
+  notify:
+    - restart sshd
+  become: yes
+
+- name: sudo | copy wheel sudoers drop-in
+  template:
+    src: 00-custom-sudoers-wheel.j2
+    dest: /etc/sudoers.d/allow-group-wheel
     mode: 440
     validate: "visudo -cf %s"
   become: yes

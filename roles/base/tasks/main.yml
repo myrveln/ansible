@@ -1,10 +1,14 @@
 ---
-
-- name: base | copy pacman configuration file
+- name: base | copy pacman configuration file based on architecture
   copy:
-    src: pacman.conf
+    src: "{{ pacman_config_map[ansible_facts['architecture']] }}"
     dest: /etc/pacman.conf
   become: yes
+  when: ansible_facts['architecture'] in pacman_config_map
+  vars:
+    pacman_config_map:
+      x86_64: pacman.x86_64.conf
+      armv7l: pacman.armv7l.conf
 
 - name: base | refresh pacman mirrors
   pacman:
@@ -77,6 +81,22 @@
     - "{{ ssh.public_keys }}"
   when: ssh is defined and ssh.public_keys is defined
 
+- name: base | set hostname using systemd if inventory_hostname is not an IP
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+    use: systemd
+  become: yes
+  when: not (inventory_hostname is match('^(\d{1,3}\.){3}\d{1,3}$'))
+  register: hostname_result
+
+- name: base | refresh facts only if hostname was changed
+  ansible.builtin.setup:
+    gather_subset:
+      - network
+      - hostname
+  become: yes
+  when: hostname_result is changed
+
 - name: base | template the /etc/hosts
   template:
     src: hosts.j2
@@ -85,6 +105,7 @@
     group: root
     mode: 0644
   become: yes
+  when: not (inventory_hostname is match('^(\d{1,3}\.){3}\d{1,3}$'))
 
 # Include sub tasks
 - include_tasks: shell.yml
@@ -98,9 +119,3 @@
 
 - include_tasks: journal.yml
   tags: [base,journal]
-
-- name: base | set hostname in /etc/hostname
-  hostname:
-    name: "{{ inventory_hostname }}"
-  become: yes
-  when: not inventory_hostname is match('(\d{1,3}\.){3}\d{1,3}')

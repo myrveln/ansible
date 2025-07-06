@@ -1,6 +1,0 @@
----
-hostname: jenkins.lan.myrveln.se
-aur_pkg_name:
-  - pi-hole-ftl
-  - mongosh-bin
-  - mongodb-bin

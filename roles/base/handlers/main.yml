@@ -10,3 +10,9 @@
     name: systemd-journald
     state: restarted
   become: yes
+
+- name: restart sshd
+  service:
+    name: sshd
+    state: restarted
+  become: yes
