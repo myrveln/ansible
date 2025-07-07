@@ -28,6 +28,7 @@ base_packages:
     - git
     - inetutils
     - jq
+    - less
     - lsof
     - openssh
     - pacman-contrib
