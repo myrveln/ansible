@@ -5,3 +5,5 @@ aur_pkg_name:
 pip_pkg_name:
   - speedtest-cli
   - ngxtop
+reload_cert_service:
+  - openresty

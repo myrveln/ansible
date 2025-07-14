@@ -1,0 +1,5 @@
+---
+hostname: dns.lan.myrveln.se
+reload_cert_service:
+  - cert-copy-pihole.service
+  - pihole-FTL
