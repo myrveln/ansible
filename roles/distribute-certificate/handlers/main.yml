@@ -1,0 +1,6 @@
+- name: reload configured services
+  service:
+    name: "{{ item }}"
+    state: reloaded
+  with_items: "{{ reload_cert_service | default([]) }}"
+  become: yes

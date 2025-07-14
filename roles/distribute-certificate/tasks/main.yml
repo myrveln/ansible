@@ -1,0 +1,22 @@
+- name: distribute-certificate | Ensure certificate directory exists
+  file:
+    path: "{{ cert_install_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+  become: yes
+
+- name: distribute-certificate | Download certificate files from Jenkins with basic auth
+  get_url:
+    url: "{{ jenkins_base_url }}{{ jenkins_job_path }}/{{ item }}"
+    dest: "{{ cert_install_dir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: '0600'
+    username: "{{ jenkins_user }}"
+    password: "{{ jenkins_token }}"
+    force_basic_auth: yes
+  become: yes
+  loop: "{{ cert_files }}"
+  notify: reload configured services
