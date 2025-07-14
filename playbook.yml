@@ -10,7 +10,14 @@
 - hosts:
     - www.lan.myrveln.se
     - jenkins.lan.myrveln.se
-    - pihole.lan.myrveln.se
   roles:
     - aur-pkg-upgrade
   tags: aur
+
+# Distribute certificates to hosts
+- hosts: certs
+  roles:
+    - distribute-certificate
+  vars_files:
+    - inventory/group_vars/all/vault.yml
+  tags: certs
