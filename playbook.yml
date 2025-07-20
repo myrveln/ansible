@@ -5,15 +5,6 @@
     - base
   tags: base
 
-# Install specified AUR packages on hosts
-# Packages are specified in host_vars
-- hosts:
-    - www.lan.myrveln.se
-    - jenkins.lan.myrveln.se
-  roles:
-    - aur-pkg-upgrade
-  tags: aur
-
 # Distribute certificates to hosts
 - hosts: certs
   roles:
@@ -21,3 +12,11 @@
   vars_files:
     - inventory/group_vars/all/vault.yml
   tags: certs
+
+# Install specified AUR packages on hosts
+# Packages are specified in host_vars
+# - hosts:
+#     - www.lan.myrveln.se
+#   roles:
+#     - aur-pkg-upgrade
+#   tags: aur

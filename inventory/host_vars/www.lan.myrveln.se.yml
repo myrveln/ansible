@@ -1,9 +1,4 @@
 ---
 hostname: www.lan.myrveln.se
-aur_pkg_name:
-  - openresty
-pip_pkg_name:
-  - speedtest-cli
-  - ngxtop
 reload_cert_service:
   - openresty
