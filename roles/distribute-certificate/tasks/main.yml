@@ -1,3 +1,14 @@
+---
+- name: distribute-certificate | Set default build path `lastSuccessfulBuild`
+  set_fact:
+    jenkins_build_path: "lastSuccessfulBuild"
+  when: build_id is not defined
+
+- name: distribute-certificate | Override build path when build_id is defined
+  set_fact:
+    jenkins_build_path: "builds/{{ build_id }}"
+  when: build_id is defined
+
 - name: distribute-certificate | Ensure certificate directory exists
   file:
     path: "{{ cert_install_dir }}"
@@ -9,7 +20,7 @@
 
 - name: distribute-certificate | Download certificate files from Jenkins with basic auth
   get_url:
-    url: "{{ jenkins_base_url }}{{ jenkins_job_path }}/{{ item }}"
+    url: "{{ jenkins_base_url }}/job/generate-certificate/{{ jenkins_build_path }}/artifact/certs/{{ cert_domain }}/{{ item }}"
     dest: "{{ cert_install_dir }}/{{ item }}"
     owner: root
     group: root
