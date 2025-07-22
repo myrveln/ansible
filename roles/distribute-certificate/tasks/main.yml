@@ -1,14 +1,4 @@
 ---
-- name: distribute-certificate | Set default build path `lastSuccessfulBuild`
-  set_fact:
-    jenkins_build_path: "lastSuccessfulBuild"
-  when: build_id is not defined
-
-- name: distribute-certificate | Override build path when build_id is defined
-  set_fact:
-    jenkins_build_path: "builds/{{ build_id }}"
-  when: build_id is defined
-
 - name: distribute-certificate | Ensure certificate directory exists
   file:
     path: "{{ cert_install_dir }}"
