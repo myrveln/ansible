@@ -6,3 +6,4 @@ cert_files:
   - chain.pem
 cert_domain: lan.myrveln.se
 jenkins_base_url: "https://jenkins.lan.myrveln.se"
+jenkins_job_path: "job/generate-certificate/lastSuccessfulBuild/artifact/certs/lan.myrveln.se"
