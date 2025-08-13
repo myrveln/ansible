@@ -1,0 +1,4 @@
+## {{ ansible_managed }}
+## Arch Linux repository mirrorlist
+Server = https://ftp.myrveln.se/pub/linux/archlinux/$repo/os/$arch
+Server = http://ftp.myrveln.se/pub/linux/archlinux/$repo/os/$arch

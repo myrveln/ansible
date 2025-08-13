@@ -1,9 +1,0 @@
----
-galaxy_info:
-  author: Kim Brandt (https://github.com/myrveln)
-  description: Install and upgrade AUR packages on hosts
-  min_ansible_version: 2.4
-  platforms:
-    - name: Archlinux
-      versions:
-      - all

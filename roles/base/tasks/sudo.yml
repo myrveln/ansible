@@ -1,13 +1,13 @@
 ---
 # Install and configure sudo
 - name: sudo | install sudo
-  pacman:
+  community.general.pacman:
     name: sudo
     state: present
   become: yes
 
 - name: sudo | add user to groups
-  user:
+  ansible.builtin.user:
     name: "{{ user.name }}"
     groups: "{{ item }}"
     append: yes
@@ -18,18 +18,18 @@
   become: yes
 
 - name: sudo | copy custom sshd drop-in
-  template:
+  ansible.builtin.template:
     src: 00-custom-sshd.conf
     dest: /etc/ssh/sshd_config.d/00-custom-sshd.conf
-    mode: 400
+    mode: 0600
   notify:
     - restart sshd
   become: yes
 
 - name: sudo | copy wheel sudoers drop-in
-  template:
+  ansible.builtin.template:
     src: 00-custom-sudoers-wheel.j2
-    dest: /etc/sudoers.d/allow-group-wheel
-    mode: 440
+    dest: /etc/sudoers.d/00-allow-wheel
+    mode: 0600
     validate: "visudo -cf %s"
   become: yes

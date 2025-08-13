@@ -1,7 +1,7 @@
 ---
 # Configure environment and install pacman packages
 - name: shell | install bash, bash-completion and emacs-nox
-  pacman:
+  community.general.pacman:
     name:
         - bash
         - bash-completion
@@ -10,7 +10,7 @@
   become: yes
 
 - name: shell | download dotfiles from github to user ~/
-  get_url:
+  ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/myrveln/dotfiles/master/{{ item }}
     dest: "/home/{{ user.name }}/{{ item }}"
     owner: "{{ user.name }}"
@@ -22,7 +22,7 @@
     - ".bashrc"
 
 - name: shell | download dotfiles from github to root ~/
-  get_url:
+  ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/myrveln/dotfiles/master/{{ item }}
     dest: "/root/{{ item }}"
     owner: root
@@ -35,7 +35,7 @@
   become: yes
 
 - name: shell | check state of ~/.config/emacs/themes for user
-  file:
+  ansible.builtin.file:
     path: "/home/{{ user.name }}/.config/emacs/themes"
     mode: 0775
     owner: "{{ user.name }}"
@@ -43,7 +43,7 @@
     state: directory
 
 - name: shell | check state of ~/.config/emacs/themes for root
-  file:
+  ansible.builtin.file:
     path: "/root/.config/emacs/themes"
     mode: 0775
     owner: "root"
@@ -52,7 +52,7 @@
   become: yes
 
 - name: shell | download emacs config from github to user ~/
-  get_url:
+  ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/myrveln/dotfiles/master/.config/emacs/{{ item }}
     dest: "/home/{{ user.name }}/.config/emacs/{{ item }}"
     owner: "{{ user.name }}"
@@ -63,7 +63,7 @@
     - "init.el"
 
 - name: shell | download emacs config from github to root ~/
-  get_url:
+  ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/myrveln/dotfiles/master/.config/emacs/{{ item }}
     dest: "/root/.config/emacs/{{ item }}"
     owner: "root"

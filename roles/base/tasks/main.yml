@@ -1,24 +1,45 @@
 ---
 - name: base | copy pacman configuration file based on architecture
-  copy:
+  ansible.builtin.copy:
     src: "{{ pacman_config_map[ansible_facts['architecture']] }}"
     dest: /etc/pacman.conf
   become: yes
   when: ansible_facts['architecture'] in pacman_config_map
   vars:
     pacman_config_map:
-      x86_64: pacman.x86_64.conf
-      armv7l: pacman.armv7l.conf
+      x86_64: pacman.x86_64
+      armv7l: pacman.armv7l
+
+- name: base | import custom GPG keys to pacman keyring
+  community.general.pacman_key:
+    id: "{{ item.id }}"
+    url: "{{ item.url }}"
+    state: present
+  with_items:
+    - "{{ pacman.custom_gpg_keys }}"
+  become: yes
+  when: pacman.custom_gpg_keys is defined
+
+- name: base | copy mirrorlist file based on architecture
+  ansible.builtin.copy:
+    src: "{{ mirrorlist_map[ansible_facts['architecture']] }}"
+    dest: /etc/pacman.d/mirrorlist
+  become: yes
+  when: ansible_facts['architecture'] in mirrorlist_map
+  vars:
+    mirrorlist_map:
+      x86_64: mirrorlist.x86_64
+      armv7l: mirrorlist.armv7l
 
 - name: base | refresh pacman mirrors
-  pacman:
+  community.general.pacman:
     update_cache: yes
   become: yes
   register: refresh
   tags: upgrade
 
 - name: base | upgrade packages on system
-  pacman:
+  community.general.pacman:
     update_cache: yes
     upgrade: yes
   become: yes
@@ -27,13 +48,13 @@
   tags: upgrade
 
 - name: base | show upgraded packages
-  debug:
+  ansible.builtin.debug:
     msg: "{{ upgraded_packages.packages }}"
   when: upgraded_packages is changed
   tags: upgrade
 
 - name: base | enable configured locales
-  template:
+  ansible.builtin.template:
     src: locale.gen
     dest: /etc/locale.gen
     owner: root
@@ -43,7 +64,7 @@
   register: locale
 
 - name: base | add /etc/locale.conf to the system
-  copy:
+  ansible.builtin.copy:
     src: locale.conf
     dest: /etc/locale.conf
     owner: root
@@ -51,18 +72,25 @@
   become: yes
 
 - name: base | generate the locale files
-  command: locale-gen
+  ansible.builtin.command: locale-gen
   become: yes
   when: locale is changed
 
 - name: base | symlink the local time
-  file:
+  ansible.builtin.file:
     src: /usr/share/zoneinfo/Europe/Stockholm
     dest: /etc/localtime
   become: yes
 
+- name: base | enable and start systemd-timesyncd service
+  ansible.builtin.service:
+    name: systemd-timesyncd.service
+    enabled: yes
+    state: started
+  become: yes
+
 - name: base | .ssh directory for user
-  file:
+  ansible.builtin.file:
     path: /home/{{ user.name }}/.ssh
     state: directory
     owner: "{{ user.name }}"
@@ -70,7 +98,7 @@
     mode: 0700
 
 - name: base | add ssh.public_keys to authorized_keys
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /home/{{ user.name }}/.ssh/authorized_keys
     state: present
     owner: "{{ user.name }}"
@@ -89,16 +117,8 @@
   when: not (inventory_hostname is match('^(\d{1,3}\.){3}\d{1,3}$'))
   register: hostname_result
 
-# - name: base | refresh facts only if hostname was changed
-#   ansible.builtin.setup:
-#     gather_subset:
-#       - network
-#       - hostname
-#   become: yes
-#   when: hostname_result is changed
-
 - name: base | template the /etc/hosts
-  template:
+  ansible.builtin.template:
     src: hosts.j2
     dest: "/etc/hosts"
     owner: root
@@ -107,15 +127,36 @@
   become: yes
   when: not (inventory_hostname is match('^(\d{1,3}\.){3}\d{1,3}$'))
 
+- name: base | add /etc/motd to the system
+  ansible.builtin.copy:
+    src: motd
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+
+- name: base | copy makepkg.conf file based on architecture
+  ansible.builtin.copy:
+    src: "{{ makepkg_map[ansible_facts['architecture']] }}"
+    dest: /etc/makepkg.conf
+    mode: 0644
+  become: yes
+  when: ansible_facts['architecture'] in makepkg_map
+  vars:
+    makepkg_map:
+      x86_64: makepkg.x86_64
+      armv7l: makepkg.armv7l
+
 # Include sub tasks
-- include_tasks: shell.yml
+- ansible.builtin.include_tasks: shell.yml
   tags: [base,shell]
 
-- include_tasks: sudo.yml
+- ansible.builtin.include_tasks: sudo.yml
   tags: [base,sudo]
 
-- include_tasks: packages.yml
+- ansible.builtin.include_tasks: packages.yml
   tags: [base,packages]
 
-- include_tasks: journal.yml
+- ansible.builtin.include_tasks: journal.yml
   tags: [base,journal]

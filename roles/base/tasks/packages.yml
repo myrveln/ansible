@@ -1,13 +1,13 @@
 ---
 # Install base packages and configure pacman cleanup services
 - name: packages | install base packages
-  pacman:
-    name: "{{ base_packages }}"
+  community.general.pacman:
+    name: "{{ pacman.base_packages }}"
     state: present
   become: yes
 
 - name: packages | install pacman cache cleanup service
-  copy:
+  ansible.builtin.copy:
     src: paccache.service
     dest: /etc/systemd/system/paccache.service
   notify:
@@ -15,7 +15,7 @@
   become: yes
 
 - name: packages | install pacman cache cleanup timer
-  copy:
+  ansible.builtin.copy:
     src: paccache.timer
     dest: /etc/systemd/system/paccache.timer
   notify:
@@ -24,7 +24,7 @@
   become: yes
 
 - name: packages | enable and start pacman cache cleanup timer
-  service:
+  ansible.builtin.service:
     name: paccache.timer
     enabled: yes
     state: started

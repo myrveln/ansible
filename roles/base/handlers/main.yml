@@ -1,18 +1,18 @@
 ---
 - name: restart paccache
-  service:
+  ansible.builtin.service:
     name: paccache.timer
     state: restarted
   become: yes
 
 - name: restart journald
-  service:
+  ansible.builtin.service:
     name: systemd-journald
     state: restarted
   become: yes
 
 - name: restart sshd
-  service:
+  ansible.builtin.service:
     name: sshd
     state: restarted
   become: yes

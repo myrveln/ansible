@@ -1,0 +1,23 @@
+# {{ ansible_managed }}
+#
+# Arch Linux ARM repository mirrorlist
+# Generated on 2023-02-06
+#
+
+# enable when working
+#Server = http://ftp.myrveln.se/pub/linux/archlinuxarm/$arch/$repo
+
+### Denmark
+## Aalborg
+Server = http://dk.mirror.archlinuxarm.org/$arch/$repo
+
+### Germany
+## Aachen
+Server = http://de3.mirror.archlinuxarm.org/$arch/$repo
+## Berlin
+Server = http://de.mirror.archlinuxarm.org/$arch/$repo
+## Coburg
+Server = http://de4.mirror.archlinuxarm.org/$arch/$repo
+## Falkenstein
+Server = http://eu.mirror.archlinuxarm.org/$arch/$repo
+Server = http://de5.mirror.archlinuxarm.org/$arch/$repo

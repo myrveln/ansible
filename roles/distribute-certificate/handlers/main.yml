@@ -1,5 +1,5 @@
 - name: reload configured services
-  service:
+  ansible.builtin.service:
     name: "{{ item }}"
     state: reloaded
   with_items: "{{ reload_cert_service | default([]) }}"

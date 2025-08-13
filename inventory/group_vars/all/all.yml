@@ -3,25 +3,29 @@ ansible_python_interpreter: auto_silent
 ansible_connection: ssh
 
 user:
-    name: kim
-    uid: 1000
-    group: users
-    gid: 100
+  name: kim
+  uid: 1000
+  group: users
+  gid: 100
 
 languages:
-    enabled:
-        - "sv_SE.UTF-8 UTF-8"
-        - "en_GB.UTF-8 UTF-8"
+  enabled:
+    - "sv_SE.UTF-8 UTF-8"
+    - "en_GB.UTF-8 UTF-8"
 
 journal:
-    max_size: 200M
+  max_size: 200M
 
 ssh:
-    public_keys:
-        - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCc3724+7/v0qON9u8Q+EDcIPQZR7vLFLu9wPx3uMLeHpzdvO/uVo2gu2cd3M/1CTKeLHx580PuBkxe+hN86uLFrM/KPiYazo+EK5sl/4GDRwL+XVFdBg+ugley92X/DAWcvA4JzKuwtUZ0o3V2wd1MedEhZ8Y7rz7F4XzvLXqxpaV5/fzpPFu8FG5qaYJJ9Zjnyg1u//0pFgV2Mmq2o+WV0mg8AeA5ufgbpmAqPIIJpQHvbzfb23bCW7P9GkqEEe5COhH/o7MomnWPnuI08VrIMYC9MivPPWUyo6ohySX6/+Ack0X4M3xnJ7GsuVN9F1NCeI2da0ms7zzkOE8neYZj kim@myrveln.se"
-        - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7vkj0RUQ8zDeVpnJuELYcVnyE85r5cUVFXDwCl6djd jenkins@jenkins.lan.myrveln.se"
+  public_keys:
+    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCc3724+7/v0qON9u8Q+EDcIPQZR7vLFLu9wPx3uMLeHpzdvO/uVo2gu2cd3M/1CTKeLHx580PuBkxe+hN86uLFrM/KPiYazo+EK5sl/4GDRwL+XVFdBg+ugley92X/DAWcvA4JzKuwtUZ0o3V2wd1MedEhZ8Y7rz7F4XzvLXqxpaV5/fzpPFu8FG5qaYJJ9Zjnyg1u//0pFgV2Mmq2o+WV0mg8AeA5ufgbpmAqPIIJpQHvbzfb23bCW7P9GkqEEe5COhH/o7MomnWPnuI08VrIMYC9MivPPWUyo6ohySX6/+Ack0X4M3xnJ7GsuVN9F1NCeI2da0ms7zzkOE8neYZj kim@myrveln.se"
+    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7vkj0RUQ8zDeVpnJuELYcVnyE85r5cUVFXDwCl6djd jenkins@jenkins.lan.myrveln.se"
 
-base_packages:
+pacman:
+  custom_gpg_keys:
+    - id: B274D1ABD2CBF44438A906F63D542E0DF2F689F2
+      url: https://ftp.myrveln.se/pub/aur-packages/myrveln-aur.asc
+  base_packages:
     - base-devel
     - binutils
     - coreutils
