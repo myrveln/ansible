@@ -41,3 +41,5 @@ pacman:
     - sysstat
     - unzip
     - zip
+    - ghostty-terminfo
+    - fastfetch
