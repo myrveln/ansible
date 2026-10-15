@@ -6,6 +6,13 @@
     state: present
   become: yes
 
+- name: packages | install custom packages from host_vars
+  community.general.pacman:
+    name: "{{ custom_packages }}"
+    state: present
+  become: yes
+  when: custom_packages is defined
+
 - name: packages | install pacman cache cleanup service
   ansible.builtin.copy:
     src: paccache.service
