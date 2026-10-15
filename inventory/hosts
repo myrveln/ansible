@@ -4,6 +4,7 @@ jenkins.lan.myrveln.se
 www.lan.myrveln.se
 dns.lan.myrveln.se
 mail.lan.myrveln.se
+pass.lan.myrveln.se
 
 [certs]
 deluge.lan.myrveln.se
@@ -11,3 +12,4 @@ jenkins.lan.myrveln.se
 www.lan.myrveln.se
 dns.lan.myrveln.se
 mail.lan.myrveln.se
+pass.lan.myrveln.se
