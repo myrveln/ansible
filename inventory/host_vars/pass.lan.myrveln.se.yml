@@ -1,0 +1,7 @@
+---
+hostname: pass.lan.myrveln.se
+reload_cert_service:
+  - openresty
+custom_packages:
+  - vaultwarden
+  - vaultwarden-web
