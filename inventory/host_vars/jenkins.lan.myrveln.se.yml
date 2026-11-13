@@ -2,3 +2,5 @@
 hostname: jenkins.lan.myrveln.se
 reload_cert_service:
   - nginx
+custom_packages:
+  - jenkins

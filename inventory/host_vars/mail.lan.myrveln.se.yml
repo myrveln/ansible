@@ -3,3 +3,5 @@ hostname: mail.lan.myrveln.se
 reload_cert_service:
   - cert-copy-mail.service
   - docker
+custom_packages:
+  - docker
