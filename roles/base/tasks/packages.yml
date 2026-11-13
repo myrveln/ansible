@@ -4,13 +4,13 @@
   community.general.pacman:
     name: "{{ pacman.base_packages }}"
     state: present
-  become: yes
+  become: true
 
 - name: packages | install custom packages from host_vars
   community.general.pacman:
     name: "{{ custom_packages }}"
     state: present
-  become: yes
+  become: true
   when: custom_packages is defined
 
 - name: packages | install pacman cache cleanup service
@@ -19,7 +19,7 @@
     dest: /etc/systemd/system/paccache.service
   notify:
     - reload systemd config
-  become: yes
+  become: true
 
 - name: packages | install pacman cache cleanup timer
   ansible.builtin.copy:
@@ -28,11 +28,11 @@
   notify:
     - reload systemd config
     - restart paccache
-  become: yes
+  become: true
 
 - name: packages | enable and start pacman cache cleanup timer
   ansible.builtin.service:
     name: paccache.timer
     enabled: yes
     state: started
-  become: yes
+  become: true
