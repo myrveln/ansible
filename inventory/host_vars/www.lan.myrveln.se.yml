@@ -2,3 +2,5 @@
 hostname: www.lan.myrveln.se
 reload_cert_service:
   - openresty
+custom_packages:
+  - openresty

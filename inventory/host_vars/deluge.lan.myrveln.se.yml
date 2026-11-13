@@ -3,3 +3,7 @@ hostname: deluge.lan.myrveln.se
 reload_cert_service:
   - cert-copy-deluge.service
   - nginx
+custom_packages:
+  - deluge
+  - nginx
+  - unrar

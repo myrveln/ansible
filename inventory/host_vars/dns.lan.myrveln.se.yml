@@ -3,3 +3,7 @@ hostname: dns.lan.myrveln.se
 reload_cert_service:
   - cert-copy-pihole.service
   - pihole-FTL
+custom_packages:
+  - pi-hole-core
+  - pi-hole-ftl-bin
+  - pi-hole-web
