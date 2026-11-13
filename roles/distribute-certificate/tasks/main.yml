@@ -6,7 +6,7 @@
     owner: root
     group: root
     mode: '0750'
-  become: yes
+  become: true
 
 - name: distribute-certificate | Download certificate files from Jenkins with basic auth
   ansible.builtin.get_url:
@@ -18,6 +18,6 @@
     username: "{{ jenkins_user }}"
     password: "{{ jenkins_token }}"
     force_basic_auth: yes
-  become: yes
+  become: true
   loop: "{{ cert_files }}"
   notify: reload configured services

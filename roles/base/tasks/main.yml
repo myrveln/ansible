@@ -3,7 +3,7 @@
   ansible.builtin.copy:
     src: "{{ pacman_config_map[ansible_facts['architecture']] }}"
     dest: /etc/pacman.conf
-  become: yes
+  become: true
   when: ansible_facts['architecture'] in pacman_config_map
   vars:
     pacman_config_map:
@@ -17,14 +17,14 @@
     state: present
   with_items:
     - "{{ pacman.custom_gpg_keys }}"
-  become: yes
+  become: true
   when: pacman.custom_gpg_keys is defined
 
 - name: base | copy mirrorlist file based on architecture
   ansible.builtin.copy:
     src: "{{ mirrorlist_map[ansible_facts['architecture']] }}"
     dest: /etc/pacman.d/mirrorlist
-  become: yes
+  become: true
   when: ansible_facts['architecture'] in mirrorlist_map
   vars:
     mirrorlist_map:
@@ -34,7 +34,7 @@
 - name: base | refresh pacman mirrors
   community.general.pacman:
     update_cache: yes
-  become: yes
+  become: true
   register: refresh
   tags: upgrade
 
@@ -42,7 +42,7 @@
   community.general.pacman:
     update_cache: yes
     upgrade: yes
-  become: yes
+  become: true
   register: upgraded_packages
   when: refresh is changed
   tags: upgrade
@@ -60,7 +60,7 @@
     owner: root
     group: root
     mode: 0644
-  become: yes
+  become: true
   register: locale
 
 - name: base | add /etc/locale.conf to the system
@@ -69,25 +69,34 @@
     dest: /etc/locale.conf
     owner: root
     group: root
-  become: yes
+  become: true
 
 - name: base | generate the locale files
   ansible.builtin.command: locale-gen
-  become: yes
+  become: true
   when: locale is changed
 
 - name: base | symlink the local time
   ansible.builtin.file:
     src: /usr/share/zoneinfo/Europe/Stockholm
     dest: /etc/localtime
-  become: yes
+  become: true
 
 - name: base | enable and start systemd-timesyncd service
   ansible.builtin.service:
     name: systemd-timesyncd.service
     enabled: yes
     state: started
-  become: yes
+  become: true
+
+- name: base | enable weekly fstrim timer
+  ansible.builtin.service:
+    name: fstrim.timer
+    enabled: true
+    state: started
+  notify:
+    - reload systemd config
+  become: true
 
 - name: base | .ssh directory for user
   ansible.builtin.file:
@@ -113,7 +122,7 @@
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
     use: systemd
-  become: yes
+  become: true
   when: not (inventory_hostname is match('^(\d{1,3}\.){3}\d{1,3}$'))
   register: hostname_result
 
@@ -124,7 +133,7 @@
     owner: root
     group: root
     mode: 0644
-  become: yes
+  become: true
   when: not (inventory_hostname is match('^(\d{1,3}\.){3}\d{1,3}$'))
 
 - name: base | add /etc/motd to the system
@@ -134,14 +143,14 @@
     owner: root
     group: root
     mode: 0644
-  become: yes
+  become: true
 
 - name: base | copy makepkg.conf file based on architecture
   ansible.builtin.copy:
     src: "{{ makepkg_map[ansible_facts['architecture']] }}"
     dest: /etc/makepkg.conf
     mode: 0644
-  become: yes
+  become: true
   when: ansible_facts['architecture'] in makepkg_map
   vars:
     makepkg_map:
@@ -154,6 +163,9 @@
 
 - ansible.builtin.include_tasks: sudo.yml
   tags: [base,sudo]
+
+- ansible.builtin.include_tasks: sshd.yml
+  tags: [base,sshd]
 
 - ansible.builtin.include_tasks: packages.yml
   tags: [base,packages]

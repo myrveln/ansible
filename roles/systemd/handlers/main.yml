@@ -1,4 +1,4 @@
 ---
 - name: reload systemd config
   ansible.builtin.command: systemctl daemon-reload
-  become: yes
+  become: true

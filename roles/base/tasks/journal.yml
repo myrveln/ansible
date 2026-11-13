@@ -4,7 +4,7 @@
   ansible.builtin.file:
     path: /etc/systemd/journald.conf.d
     state: directory
-  become: yes
+  become: true
   tags:
     - journal
 
@@ -15,6 +15,6 @@
   when: journal is defined and journal.max_size is defined
   notify:
     - restart journald
-  become: yes
+  become: true
   tags:
     - journal

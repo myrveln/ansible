@@ -3,16 +3,16 @@
   ansible.builtin.service:
     name: paccache.timer
     state: restarted
-  become: yes
+  become: true
 
 - name: restart journald
   ansible.builtin.service:
     name: systemd-journald
     state: restarted
-  become: yes
+  become: true
 
 - name: restart sshd
   ansible.builtin.service:
     name: sshd
     state: restarted
-  become: yes
+  become: true

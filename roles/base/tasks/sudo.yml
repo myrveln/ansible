@@ -4,7 +4,7 @@
   community.general.pacman:
     name: sudo
     state: present
-  become: yes
+  become: true
 
 - name: sudo | add user to groups
   ansible.builtin.user:
@@ -15,16 +15,13 @@
     - wheel
     - storage
     - power
-  become: yes
+  become: true
 
-- name: sudo | copy custom sshd drop-in
-  ansible.builtin.template:
-    src: 00-custom-sshd.conf
-    dest: /etc/ssh/sshd_config.d/00-custom-sshd.conf
-    mode: 0600
-  notify:
-    - restart sshd
-  become: yes
+- name: sudo | ensure removal of sudoers drop-in from template creation
+  ansible.builtin.file:
+    path: /etc/sudoers.d/allow-group-wheel
+    state: absent
+  become: true
 
 - name: sudo | copy wheel sudoers drop-in
   ansible.builtin.template:
@@ -32,4 +29,4 @@
     dest: /etc/sudoers.d/00-allow-wheel
     mode: 0600
     validate: "visudo -cf %s"
-  become: yes
+  become: true

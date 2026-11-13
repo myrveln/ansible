@@ -7,7 +7,7 @@
         - bash-completion
         - emacs-nox
     state: present
-  become: yes
+  become: true
 
 - name: shell | download dotfiles from github to user ~/
   ansible.builtin.get_url:
@@ -32,7 +32,7 @@
     - ".bash_profile"
     - ".aliases"
     - ".bashrc"
-  become: yes
+  become: true
 
 - name: shell | check state of ~/.config/emacs/themes for user
   ansible.builtin.file:
@@ -49,7 +49,7 @@
     owner: "root"
     group: "root"
     state: directory
-  become: yes
+  become: true
 
 - name: shell | download emacs config from github to user ~/
   ansible.builtin.get_url:
@@ -72,4 +72,4 @@
   with_items:
     - "themes/afternoon-theme.el"
     - "init.el"
-  become: yes
+  become: true
